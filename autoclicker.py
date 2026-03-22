@@ -7,14 +7,6 @@ user32 = ctypes.windll.user32
 mining = False
 holding = False
 
-print(r"""
-    __           __      
-___/ /________ _/ /_____
-/ __  / ___/ __ `/ //_/ _ \
-/ /_/ / /  / /_/ / ,< /  __/
-\__,_/_/   \__,_/_/|_|\___/
-""")
-
 print("F6 = toggle mining")
 print("ESC = exit")
 
