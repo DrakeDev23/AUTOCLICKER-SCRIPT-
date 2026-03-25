@@ -2,33 +2,51 @@ import ctypes
 import keyboard
 import time
 
-user32 = ctypes.windll.user32
+class AutoMiner:
+    def __init__(self):
+        self.user32 = ctypes.windll.user32
+        self.mining = False
+        self.holding = False
 
-mining = False
-holding = False
+    def press_mouse(self):
+        self.user32.mouse_event(2, 0, 0, 0, 0)
 
-print("F6 = toggle mining")
-print("ESC = exit")
+    def release_mouse(self):
+        self.user32.mouse_event(4, 0, 0, 0, 0)
 
-while True:
+    def toggle_mining(self):
+        self.mining = not self.mining
+        print("Mining:", self.mining)
 
-    if keyboard.is_pressed("esc"):
-        if holding:
-            user32.mouse_event(4,0,0,0,0)  
+    def stop(self):
+        if self.holding:
+            self.release_mouse()
         print("Exiting...")
-        break
 
-    if keyboard.is_pressed("F6"):
-        mining = not mining
-        print("Mining:", mining)
-        time.sleep(0.4)
+    def run(self):
+        print("F6 = toggle mining")
+        print("ESC = exit")
 
-    if mining and not holding:
-        user32.mouse_event(2,0,0,0,0)  
-        holding = True
+        while True:
+            if keyboard.is_pressed("esc"):
+                self.stop()
+                break
 
-    if not mining and holding:
-        user32.mouse_event(4,0,0,0,0)  
-        holding = False
+            if keyboard.is_pressed("F6"):
+                self.toggle_mining()
+                time.sleep(0.4)  
 
-    time.sleep(0.01)
+            if self.mining and not self.holding:
+                self.press_mouse()
+                self.holding = True
+
+            if not self.mining and self.holding:
+                self.release_mouse()
+                self.holding = False
+
+            time.sleep(0.01)
+
+
+if __name__ == "__main__":
+    miner = AutoMiner()
+    miner.run()
